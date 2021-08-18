@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:stable
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - "./nginx/conf.d:/etc/nginx/conf.d"
+    # links:
+    #   - app
+
+  # app:
+  #   image: node:alpine
+  #   container_name: app
+  #   hostname: app
+  #   volumes:
+  #     - type: bind
+  #       source: ./app
+  #       target: /src
+  #   working_dir: /src
+  #   command: [sh, -c, npm install && npm run start]
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - CHOKIDAR_USEPOLLING=true
+
+  mongo:
+    image: mongo
+    container_name: "mongo"
+    command: 
+      - mongod
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo-data:/data/db
+
+  mongo-data:
+    image: busybox
+
+volumes: 
+  mongo-data:
