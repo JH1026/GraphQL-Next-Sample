@@ -42,7 +42,7 @@ const apolloServer = new ApolloServer({
       `);
       process.exit(1);
     }
-    return { db, userId: 'testUser001' };
+    return { db, currentUserId: 'testUser001' };
   },
 });
 

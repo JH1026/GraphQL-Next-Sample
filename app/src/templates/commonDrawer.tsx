@@ -29,7 +29,7 @@ export default function commonDrawer() {
     ['Top', '/'],
     ['Register', '/register'],
     ['Search', '/search'],
-    ['Users', '/users'],
+    ['Users', '/userList'],
   ];
 
   const handleDrawerOpen = () => {

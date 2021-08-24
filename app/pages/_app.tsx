@@ -1,6 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect } from 'react';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import {
+  ApolloClient, InMemoryCache, ApolloProvider,
+} from '@apollo/client';
 import '../styles/globals.css';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { StylesProvider } from '@material-ui/styles';

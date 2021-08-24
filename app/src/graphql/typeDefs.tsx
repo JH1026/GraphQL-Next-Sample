@@ -2,8 +2,8 @@ import { gql } from 'apollo-server-micro';
 
 const typeDefs = gql`
   type User {
-    id: ID!
-    name: String!
+    userId: String!
+    postCount: Int!
     postedLinks: [Link!]!
   }
 
@@ -13,7 +13,12 @@ const typeDefs = gql`
     url: String!
     postedBy: User!
     favoritePoint: Int!
-    linkRelation: [LinkRelation!]!
+    userStatus: Boolean!
+  }
+
+  type LinkInfo {
+    link: Link!
+    favUsers: [User!]!
   }
 
   type FavoriteResult {
@@ -37,6 +42,15 @@ const typeDefs = gql`
     allFavoriteLinks(
       userId: String!
     ): [Link!]!
+
+    searchLink(
+      word: String!
+      count: Int!
+    ): [Link!]!
+
+    linkInfo(
+      linkId: String!
+    ): LinkInfo
   }
 
   type Mutation {

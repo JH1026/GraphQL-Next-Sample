@@ -1,8 +1,13 @@
 const userQuery = {
-  allUsers(parent, args, context) {
-    return [
-      { name: 'データ2', id: 'xxx', postedLinks: [] },
-    ];
+  async allUsers(parent, args, { db, currentUser }) {
+    const collection = db.collection('users');
+    const users = await collection.find(
+      {
+        userId: { $ne: currentUser },
+      },
+    ).toArray();
+
+    return users;
   },
 
 };

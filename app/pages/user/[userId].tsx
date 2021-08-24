@@ -1,12 +1,13 @@
-import React, { FC, useEffect, useState } from 'react';
+/* eslint-disable react/destructuring-assignment */
+import React, { useState, useEffect, FC } from 'react';
 import { useQuery, gql } from '@apollo/client';
 import Head from 'next/head';
 import { Button } from '@material-ui/core';
-import LinkComponent from '../src/components/linkComponent';
-import styles from '../styles/Home.module.css';
+import LinkComponent from '../../src/components/linkComponent';
+import styles from '../../styles/common.module.css';
 
-const GET_ALL_USERS = gql`
-  query AllUserLinks ($userId: String!){
+const GET_USER_INFO = gql`
+  query UserLinkInfo($userId: String!) {
     allUserLinks(userId: $userId) {
       id
       title
@@ -31,6 +32,10 @@ const GET_ALL_USERS = gql`
   }
 `;
 
+type Props = {
+  userId: string,
+};
+
 type LinkInfoType = {
   id: string,
   title: string,
@@ -42,13 +47,12 @@ type LinkInfoType = {
   },
 };
 
-const LinkList: FC = () => {
+const UserInfo: FC<Props> = ({ userId }: Props) => {
   const [links, setLinks] = useState<LinkInfoType[]>([]);
   const [favLinks, setFavLinks] = useState<LinkInfoType[]>([]);
   const [shouldShowUserPost, setShouldShowUserPost] = useState<boolean>(true);
-
-  const { loading, error, data } = useQuery(GET_ALL_USERS, {
-    variables: { userId: 'testUser001' }, // test
+  const { loading, error, data } = useQuery(GET_USER_INFO, {
+    variables: { userId },
     fetchPolicy: 'network-only',
   });
 
@@ -67,10 +71,11 @@ const LinkList: FC = () => {
 
   return (
     <>
-      <Head>
-        <title>Top</title>
-      </Head>
       <div className={styles.container}>
+        <Head>
+          <title>マイリスト</title>
+        </Head>
+
         <main className={styles.main}>
           <div>
             <Button
@@ -81,7 +86,8 @@ const LinkList: FC = () => {
               }}
               onClick={() => setShouldShowUserPost(true)}
             >
-              あなたが投稿したリンク
+              {userId}
+              が投稿したリンク
             </Button>
             <Button
               variant="contained"
@@ -92,26 +98,34 @@ const LinkList: FC = () => {
               }}
               onClick={() => setShouldShowUserPost(false)}
             >
-              あなたがいいね！したリンク
+              {userId}
+              がいいね！したリンク
             </Button>
           </div>
+
           <div
             className={styles.grid}
             style={{
               display: shouldShowUserPost ? 'flex' : 'none',
             }}
           >
-            {links.map((item) => (
-              <LinkComponent
-                key={item.id}
-                linkId={item.id}
-                title={item.title}
-                url={item.url}
-                userStatus={item.userStatus}
-                currentPoint={item.favoritePoint}
-                userId={item.postedBy.userId}
-              />
-            ))}
+            {links.length === 0
+              ? (
+                <h2>
+                  投稿されたリンクはありません
+                </h2>
+              )
+              : links.map((item) => (
+                <LinkComponent
+                  key={item.id}
+                  linkId={item.id}
+                  title={item.title}
+                  url={item.url}
+                  userStatus={item.userStatus}
+                  currentPoint={item.favoritePoint}
+                  userId={item.postedBy.userId}
+                />
+              ))}
           </div>
           <div
             className={styles.grid}
@@ -119,17 +133,23 @@ const LinkList: FC = () => {
               display: !shouldShowUserPost ? 'flex' : 'none',
             }}
           >
-            {favLinks.map((item) => (
-              <LinkComponent
-                key={item.id}
-                linkId={item.id}
-                title={item.title}
-                url={item.url}
-                userStatus={item.userStatus}
-                currentPoint={item.favoritePoint}
-                userId={item.postedBy.userId}
-              />
-            ))}
+            {favLinks.length === 0
+              ? (
+                <h2>
+                  いいね!されたリンクはありません
+                </h2>
+              )
+              : favLinks.map((item) => (
+                <LinkComponent
+                  key={item.id}
+                  linkId={item.id}
+                  title={item.title}
+                  url={item.url}
+                  userStatus={item.userStatus}
+                  currentPoint={item.favoritePoint}
+                  userId={item.postedBy.userId}
+                />
+              ))}
           </div>
         </main>
       </div>
@@ -137,4 +157,10 @@ const LinkList: FC = () => {
   );
 };
 
-export default LinkList;
+export async function getServerSideProps(context: any) {
+  const { userId } = context.query;
+
+  return { props: { userId } };
+}
+
+export default UserInfo;

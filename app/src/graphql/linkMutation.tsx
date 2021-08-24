@@ -2,11 +2,11 @@ import { ObjectId } from 'mongodb';
 
 /* eslint-disable no-underscore-dangle */
 const linkMutation = {
-  async postLink(parent, args, { db, userId }) {
+  async postLink(parent, args, { db, currentUserId }) {
     const newLink = {
       ...args,
       id: null,
-      postedBy: userId,
+      postedBy: currentUserId,
       favoritePoint: 0,
     };
 
@@ -14,10 +14,17 @@ const linkMutation = {
 
     newLink.id = insertData.insertedId;
 
+    await db.collection('users').updateOne(
+      {
+        userId: currentUserId,
+      },
+      { $inc: { postCount: 1 } },
+    );
+
     return newLink;
   },
 
-  async toggleFavoriteLink(parent, args, { db, userId }) {
+  async toggleFavoriteLink(parent, args, { db, currentUserId }) {
     let calcPoint = 0;
     let updatePoint = 0;
     let updateIsFavorite = true;
@@ -26,7 +33,7 @@ const linkMutation = {
 
     const favoriteLink = await favCollection.findOne({
       linkId: args.linkId,
-      userId,
+      userId: currentUserId,
     });
 
     const targetLink = await linkCollection.findOne({
@@ -36,7 +43,7 @@ const linkMutation = {
     if (!favoriteLink) {
       const newFavoriteLink = {
         linkId: args.linkId,
-        userId,
+        userId: currentUserId,
         isFavorite: true,
       };
       await db.collection('favorites').insertOne(newFavoriteLink);

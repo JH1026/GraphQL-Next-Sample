@@ -1,78 +1,123 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { useState, useEffect, FC } from 'react';
-import { useRouter } from 'next/router';
-
+import { useQuery, gql } from '@apollo/client';
 import Head from 'next/head';
-import { Button } from '@material-ui/core';
+import { Card } from '@material-ui/core';
+import LinkComponent from '../../src/components/linkComponent';
+import styles from '../../styles/common.module.css';
+
+const GET_LINK_INFO = gql`
+  query LinkInfo($linkId: String!) {
+    linkInfo(linkId: $linkId) {
+      link{
+        id
+        title
+        url
+        favoritePoint
+        userStatus
+        postedBy {
+          userId
+        }
+      }
+      favUsers{
+        userId
+      }
+    }
+  }
+`;
 
 type Props = {
-  movies: string[],
-  category: string,
+  linkId: string,
 };
 
-const MovieList: FC<Props> = (data) => {
-  const [displayTitle, setTitle] = useState<string>('   ');
-  const router = useRouter();
-  const { movies, category } = data;
+type LinkInfoType = {
+  id: string,
+  title: string,
+  url: string,
+  favoritePoint: number,
+  userStatus: boolean,
+  postedBy: {
+    userId: string,
+  },
+};
+
+const UserInfo: FC<Props> = ({ linkId }: Props) => {
+  const [link, setLink] = useState<LinkInfoType>();
+  const [favoriteUsers, setFavUsers] = useState<LinkInfoType[]>([]);
+  const { loading, error, data } = useQuery(GET_LINK_INFO, {
+    variables: { linkId },
+    fetchPolicy: 'network-only',
+  });
 
   useEffect(() => {
-    if (category === 'cook') {
-      setTitle('料理');
-    } else if (category === 'commentary') {
-      setTitle('実況');
-    } else if (category === 'tas') {
-      setTitle('TAS');
-    } else if (category === 'rta') {
-      setTitle('RTA');
-    } else {
-      router.push('/');
+    if (!loading) {
+      if (error) {
+        alert('データの取得に失敗しました');
+      } else if (data) {
+        const { linkInfo } = data;
+        setLink(linkInfo.link);
+        setFavUsers(linkInfo.favUsers);
+      }
     }
-  }, []);
+  }, [loading]);
 
   return (
     <>
       <div className={styles.container}>
         <Head>
-          <title>マイリスト</title>
+          <title>
+            Link:
+            {' '}
+            {link && link.title}
+          </title>
         </Head>
+        <main className={styles.main}>
+          {link && (
+          <LinkComponent
+            key={link.id}
+            linkId={link.id}
+            title={link.title}
+            url={link.url}
+            userStatus={link.userStatus}
+            currentPoint={link.favoritePoint}
+            userId={link.postedBy.userId}
+          />
+          )}
+          <h2>
+            {favoriteUsers.length > 0 ? 'いいね!したユーザー一覧' : 'いいね!したユーザーはいません'}
+          </h2>
+          <div
+            className={styles.grid}
+          >
 
-        <main className={styles.grid}>
+            {favoriteUsers && favoriteUsers.map((item: any) => (
+              <Card
+                style={{
+                  width: '50%',
+                  minWidth: '150px',
+                  maxWidth: '300px',
+                  float: 'left',
+                  margin: '4px',
+                  padding: '15px',
+                  textAlign: 'center',
+                }}
+                key={item.userId}
+              >
+                {item.userId}
+              </Card>
 
-          <div className={styles.centerContents}>
-            <h1>
-              {`保存した${displayTitle}動画リンク一覧`}
-            </h1>
-          </div>
-          {movies.length === 0
-            ? <h2>保存されたリンクはありません</h2>
-            : movies.map((item: any) => (
-              <NicoNicoLink
-                key={item.movieId}
-                memo={item.memo}
-                movieId={item.movieId}
-              />
             ))}
+          </div>
         </main>
-      </div>
-      <div className={styles.backButtonArea}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => router.back()}
-        >
-          戻る
-        </Button>
       </div>
     </>
   );
 };
 
 export async function getServerSideProps(context: any) {
-  const { category } = context.query;
+  const { linkId } = context.query;
 
-  const movies = [] as any;
-
-  return { props: { movies, category } };
+  return { props: { linkId } };
 }
 
-export default MovieList;
+export default UserInfo;
