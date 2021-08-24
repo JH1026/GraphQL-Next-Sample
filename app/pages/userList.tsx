@@ -3,7 +3,7 @@ import { useQuery, gql } from '@apollo/client';
 
 import Head from 'next/head';
 import UserComponent from '../src/components/userComponent';
-import styles from '../styles/Home.module.css';
+import styles from '../styles/common.module.css';
 
 const GET_ALL_USERS = gql`
   query{
@@ -40,7 +40,7 @@ const LinkList: FC = () => {
   return (
     <>
       <Head>
-        <title>UserList</title>
+        <title>User List</title>
       </Head>
       <div className={styles.container}>
         <main className={styles.main}>

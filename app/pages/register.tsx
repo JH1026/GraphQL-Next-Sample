@@ -1,6 +1,7 @@
 import React, { useEffect, useState, FC } from 'react';
 import { useMutation, gql } from '@apollo/client';
 import { TextField, Button } from '@material-ui/core';
+import Head from 'next/head';
 import styles from '../styles/common.module.css';
 
 const POST_LINK = gql`
@@ -45,6 +46,12 @@ const Register: FC = () => {
 
   return (
     <>
+      {' '}
+      <Head>
+        <title>
+          Register Link
+        </title>
+      </Head>
       <div className={styles.container}>
         <TextField
           id="URL-field"

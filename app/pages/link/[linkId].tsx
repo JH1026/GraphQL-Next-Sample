@@ -1,4 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
 import React, { useState, useEffect, FC } from 'react';
 import { useQuery, gql } from '@apollo/client';
 import Head from 'next/head';
@@ -63,14 +62,14 @@ const UserInfo: FC<Props> = ({ linkId }: Props) => {
 
   return (
     <>
+      <Head>
+        <title>
+          Link:
+          {' '}
+          {link && link.title}
+        </title>
+      </Head>
       <div className={styles.container}>
-        <Head>
-          <title>
-            Link:
-            {' '}
-            {link && link.title}
-          </title>
-        </Head>
         <main className={styles.main}>
           {link && (
           <LinkComponent

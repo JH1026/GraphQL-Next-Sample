@@ -59,7 +59,7 @@ const LinkList: FC = () => {
   return (
     <>
       <Head>
-        <title>Search</title>
+        <title>Search Link</title>
       </Head>
       <div className={styles.container}>
         <main

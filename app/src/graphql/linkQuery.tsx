@@ -107,7 +107,7 @@ const linkQuery = {
     const favLinks = await favCollection.find({
       linkId: args.linkId,
       isFavorite: true,
-      userId: { $ne: currentUserId },
+      // userId: { $ne: currentUserId },
     }).toArray();
 
     const favUsers = favLinks.map((item) => ({

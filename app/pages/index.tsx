@@ -3,7 +3,7 @@ import { useQuery, gql } from '@apollo/client';
 import Head from 'next/head';
 import { Button } from '@material-ui/core';
 import LinkComponent from '../src/components/linkComponent';
-import styles from '../styles/Home.module.css';
+import styles from '../styles/common.module.css';
 
 const GET_ALL_USERS = gql`
   query AllUserLinks ($userId: String!){

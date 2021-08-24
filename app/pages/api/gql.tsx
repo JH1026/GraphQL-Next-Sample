@@ -11,7 +11,7 @@ const querys = {
   ...linkQuery,
 };
 
-const resolvers = { // データ取得処理
+const resolvers = {
   Query: {
     ...querys,
   },

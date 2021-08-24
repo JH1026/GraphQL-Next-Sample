@@ -45,7 +45,7 @@ const LinkComponent = (prop :Props) => {
   };
 
   const moveToLinkPage = (linkId: string) => {
-    router.push(`link/${linkId}`);
+    router.push(`/link/${linkId}`);
   };
 
   const jumpToLinkPage = (url: string) => {
