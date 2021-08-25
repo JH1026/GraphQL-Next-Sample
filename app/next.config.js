@@ -1,6 +1,6 @@
 module.exports = {
   reactStrictMode: true,
   env: {
-    DB_HOST: 'mongodb://localhost:27017/test',
+    DB_HOST: 'mongodb://mongo:27017/test',
   }
 }

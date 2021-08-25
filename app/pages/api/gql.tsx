@@ -33,7 +33,7 @@ const apolloServer = new ApolloServer({
       db = client.db();
     } catch (error) {
       console.log(`
-      
+        ${MONGO_DB}
         Mongo DB Host not found!
         please add DB_HOST environment variable to .env file
   

@@ -1,7 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
-import { Card, Button } from '@material-ui/core';
+import { Card } from '@material-ui/core';
 
 type Props = {
   userId: string,
