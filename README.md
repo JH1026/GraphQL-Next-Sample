@@ -1,6 +1,5 @@
 ## Overview
 
-This is sample app using next.js, GraphQL.<br>
 I created this App due to study GraphQL.<br>
 
 ## Techniques
