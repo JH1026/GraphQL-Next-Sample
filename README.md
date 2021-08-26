@@ -1,6 +1,7 @@
 ## Overview
 
-I created this App due to study GraphQL.<br>
+This App aims to share web site links.
+I created this App as sample due to study GraphQL.<br>
 
 ## Techniques
 
