@@ -1,6 +1,6 @@
 ## Overview
 
-This App aims to share web site links.
+This App shares website links.<br>
 I created this App as sample due to study GraphQL.<br>
 
 ## Techniques
@@ -32,7 +32,7 @@ cd GraphQL-Next-Sample
 
 2. Activate Docker
 ```terminal
-docker up
+docker-compose up
 ```
 
 3. Initial Data Input
@@ -41,16 +41,13 @@ docker compose exec mongo bash -c "mongorestore -d test --dir /tmp/dump/test"
 ```
 
 4. Access to http://localhost
-```terminal
-docker compose exec mongo bash -c "mongorestore -d test --dir /tmp/dump/test"
-```
 
 ## Image
+ Top <br>
+<img src="https://user-images.githubusercontent.com/64642177/131006036-abece885-b393-444d-a439-5045a5206834.png" width=600><br>
+ Register <br>
+<img src="https://user-images.githubusercontent.com/64642177/131006095-a99a33f4-5704-4cbe-aa3e-01c88e0aba04.png" width=600><br>
  Search <br>
-<img src="https://user-images.githubusercontent.com/64642177/127508184-f72c9b82-f1fa-4408-9426-77201ab062aa.png" width=600><br>
- Review <br>
-<img src="https://user-images.githubusercontent.com/64642177/127508205-2ba1684f-8e99-4654-b4e6-a903f6762ff9.png" width=600><br>
- BookGroup <br>
-<img src="https://user-images.githubusercontent.com/64642177/127508210-367d3b25-8c71-41e5-ae96-104a98223180.png" width=600><br>
+<img src="https://user-images.githubusercontent.com/64642177/131006127-17d0c0b0-d2c7-4457-8859-1a8049aa674a.png" width=600><br>
 
 
