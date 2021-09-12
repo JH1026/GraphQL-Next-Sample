@@ -30,17 +30,17 @@ git clone git@github.com:JuneOrg2020/GraphQL-Next-Sample.git
 cd GraphQL-Next-Sample
 ```
 
-2. Activate Docker
+3. Activate Docker
 ```terminal
 docker-compose up
 ```
 
-3. Initial Data Input
+4. Initial Data Input
 ```terminal
 docker compose exec mongo bash -c "mongorestore -d test --dir /tmp/dump/test"
 ```
 
-4. Access to http://localhost
+5. Access to http://localhost
 
 ## Image
  Top <br>
