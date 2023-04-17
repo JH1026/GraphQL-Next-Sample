@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useQuery, gql } from '@apollo/client';
 import Head from 'next/head';
 import { Button } from '@material-ui/core';
@@ -31,39 +31,28 @@ const GET_ALL_USERS = gql`
   }
 `;
 
-type LinkInfoType = {
-  id: string,
-  title: string,
-  url: string,
-  favoritePoint: number,
-  userStatus: boolean,
-  postedBy: {
-    userId: string,
-  },
-};
+// type LinkInfoType = {
+//   id: string,
+//   title: string,
+//   url: string,
+//   favoritePoint: number,
+//   userStatus: boolean,
+//   postedBy: {
+//     userId: string,
+//   },
+// };
 
 const LinkList: FC = () => {
-  const [links, setLinks] = useState<LinkInfoType[]>([]);
-  const [favLinks, setFavLinks] = useState<LinkInfoType[]>([]);
-  const [shouldShowUserPost, setShouldShowUserPost] = useState<boolean>(true);
+  const [showUserPost, setShowUserPost] = useState<boolean>(true);
 
   const { loading, error, data } = useQuery(GET_ALL_USERS, {
     variables: { userId: 'testUser001' }, // test
     fetchPolicy: 'network-only',
   });
 
-  useEffect(() => {
-    if (!loading) {
-      if (error) {
-        alert('データの取得に失敗しました');
-      } else if (data) {
-        console.log(data);
-        const { allUserLinks, allFavoriteLinks } = data;
-        setLinks(allUserLinks);
-        setFavLinks(allFavoriteLinks);
-      }
-    }
-  }, [loading]);
+  if (loading || !data || error) {
+    return <>Loading...</>;
+  }
 
   return (
     <>
@@ -77,9 +66,9 @@ const LinkList: FC = () => {
               variant="contained"
               color="primary"
               style={{
-                color: shouldShowUserPost ? '#69f' : '#fff',
+                color: showUserPost ? '#69f' : '#fff',
               }}
-              onClick={() => setShouldShowUserPost(true)}
+              onClick={() => setShowUserPost(true)}
             >
               あなたが投稿したリンク
             </Button>
@@ -87,10 +76,10 @@ const LinkList: FC = () => {
               variant="contained"
               color="primary"
               style={{
-                color: !shouldShowUserPost ? '#69f' : '#fff',
+                color: !showUserPost ? '#69f' : '#fff',
                 margin: '4px',
               }}
-              onClick={() => setShouldShowUserPost(false)}
+              onClick={() => setShowUserPost(false)}
             >
               あなたがいいね！したリンク
             </Button>
@@ -98,10 +87,10 @@ const LinkList: FC = () => {
           <div
             className={styles.grid}
             style={{
-              display: shouldShowUserPost ? 'flex' : 'none',
+              display: showUserPost ? 'flex' : 'none',
             }}
           >
-            {links.map((item) => (
+            {data.allUserLinks.map((item) => (
               <LinkComponent
                 key={item.id}
                 linkId={item.id}
@@ -116,10 +105,10 @@ const LinkList: FC = () => {
           <div
             className={styles.grid}
             style={{
-              display: !shouldShowUserPost ? 'flex' : 'none',
+              display: !showUserPost ? 'flex' : 'none',
             }}
           >
-            {favLinks.map((item) => (
+            {data.allFavoriteLinks.map((item) => (
               <LinkComponent
                 key={item.id}
                 linkId={item.id}
