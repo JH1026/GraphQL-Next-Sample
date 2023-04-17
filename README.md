@@ -1,8 +1,3 @@
-## Overview
-
-This App shares website links.<br>
-I created this App as sample due to study GraphQL.<br>
-
 ## Techniques
 
 * __Frontend__
